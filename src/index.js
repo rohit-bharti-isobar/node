@@ -1,9 +1,12 @@
 const express = require('express');
 const path = require('path');
 const hbs = require('hbs');
-const bodyparser = require('body-parser');
+var bodyParser = require('body-parser')
 
 const app = express();
+
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
 
 const staticPath = path.join(__dirname, '../public');
 app.use(express.static(staticPath));
@@ -21,16 +24,13 @@ app.get('/login', function (req, res) {
         title: 'login'
     })
 })
+
 app.post('/success', function (req, res) {
     res.render('success', {
-        submittetxt: 'Account created successfully'
-    })
-})
-
-// Access the data
-app.get('/success', function (req, res) {
-    res.query('success', {
-        submittetxt: 'Account created successfully'
+        submittetxt: 'Account created successfully',
+        name: req.body.name,
+        email: req.body.email,
+        pswd: req.body.pswd
     })
 })
 
